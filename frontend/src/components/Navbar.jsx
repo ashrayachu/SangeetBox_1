@@ -1,46 +1,48 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { searchSongs } from "../redux/slices/searchSong";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import logo from '../assets/sangeeth-logo-bg.png'
+
+import { googleAuth, logout } from "../redux/slices/userAuth";
 import {
     Bell,
-    ChevronLeft,
-    ChevronRight,
     Home,
-    Globe ,
-    Laptop2,
-    LayoutList,
-    Library,
-    Maximize2,
-    Mic2,
-    Play,
-    Plus,
-    Radio,
-    Repeat,
+    Globe,
     Search,
-    Shuffle,
-    SkipBack,
-    SkipForward,
-    Volume2,
 } from "lucide-react"
 
 
 const Navbar = () => {
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userDoc = useSelector((state) => state.auth?.userDoc);
+
+
+
+    useEffect(() => {
+        dispatch(googleAuth())
+    }, [dispatch]);
+    console.log("userDoc", userDoc)
+
+    const handleLogout = () => {
+        dispatch(logout())
+    }
+
     const handleSearch = () => {
-        if(query){
-        navigate(`/search/${query}`);
+        if (query && userDoc?.user) {
+            navigate(`/search/${query}`);
         }
-        else{
-            alert("Please enter a search query")
+        else {
+            alert("Please login and enter a search query")
         }
     };
 
     return (
-        <div className="sticky top-0 bg-black bg-opacity-90 p-4 flex justify-between items-center gap-4">
+        <div className="sticky top-0 bg-black bg-opacity-90 p-4 flex z-50 justify-between items-center gap-4">
             <div className="hidden md:flex">
                 <button className="bg-black rounded-full p-1">
-                    <span className="h-6 w-6 ">logo </span>
+                    <img src={logo} alt="logo" className="w-10 h-10" />
                 </button>
             </div>
             <div className="flex gap-2 w-[450px] items-center">
@@ -48,7 +50,7 @@ const Navbar = () => {
                     <Home className="h-6 w-6 text-white hover:text-white" onClick={() => navigate('/')} />
                 </div>
                 <div className="bg-neutral-700 rounded-full w-full flex items-center gap-2 px-4 py-2 ">
-                    <Search className="h-5 w-5 text-white"  />
+                    <Search className="h-5 w-5 text-white" />
                     <input
                         type="text"
                         value={query}
@@ -56,18 +58,27 @@ const Navbar = () => {
                         className="border-none outline-none text-white w-full"
                         placeholder="What do you want to listen to?"
                     />
-                    <Globe className="h-5 w-5 text-white" onClick={handleSearch}  />
+                    <Globe className="h-5 w-5 text-white" onClick={handleSearch} />
                 </div>
 
             </div>
-            <div className='hidden md:flex gap-4 items-center'>
-                <button className="bg-white text-black rounded-full px-4 py-1 font-semibold text-sm">Install App</button>
-                <button className="bg-black rounded-full p-2">
-                    <Bell className="h-5 w-5" />
-                </button>
-                <button className="bg-black rounded-full h-8 w-8 flex items-center justify-center text-white">O</button>
-            </div>
-        </div>
+            {userDoc ? (
+                <div className='hidden md:flex justify-center items-center gap-4'>
+                    <span className="text-white">Hey, {userDoc?.user?.name}</span>
+
+                    <button onClick={handleLogout}
+                        className="bg-white text-black rounded-full cursor-pointer px-4 py-1 font-semibold text-sm">Logout</button>
+
+                </div>
+            ) : (
+                < div className='hidden md:flex gap-4 justify-center items-center' >
+                    <button className="bg-white text-black rounded-full px-4 py-1 font-semibold text-sm">
+                        <Link to='/login'>Login</Link>
+                    </button>
+                </div >
+            )}
+
+        </div >
     );
 }
 

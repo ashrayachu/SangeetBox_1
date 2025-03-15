@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { playPause, playSong, stopSong, toggleMaximize, nextSong } from "../redux/slices/playSong"; // Import actions
+import { playPause, playSong, stopSong, toggleMaximize, nextSong, prevSong } from "../redux/slices/playSong"; // Import actions
 import Slider from '@mui/material/Slider';
 import CircularProgress from '@mui/material/CircularProgress';
 import { searchSongs } from "../redux/slices/searchSong";
@@ -31,15 +31,15 @@ const MusicPlayer = () => {
   const playerRef = useRef(null);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (error) {
-      navigate("/error", {
-        state: {
-          message: error, status: status
-        }
-      });
-    }
-  }, [error, navigate]);
+  // useEffect(() => {
+  //   if (error) {
+  //     navigate("/error", {
+  //       state: {
+  //         message: error, status: status
+  //       }
+  //     });
+  //   }
+  // }, [error, navigate]);
 
   const [volume, setVolume] = useState(30);
   const [foundSong, setFoundSong] = useState(null);
@@ -55,35 +55,12 @@ const MusicPlayer = () => {
   const maximize = useSelector((state) => state.playSong?.maximize);
   const currentIndex = useSelector((state) => state.playSong?.currentIndex);
 
-  const playlistItems = useSelector((state) => state.playlist?.playlistItems);
+  const playlistItems = useSelector((state) => state.playSong?.playlist);
 
+  const image = currentSong?.songDetails?.album?.images?.[0]?.url
+  const title = currentSong?.songDetails?.name
+  const artist = currentSong?.songDetails?.artists?.[0]?.name
 
-  useEffect(() => {
-    if (currentSong) {
-      let song = null;
-      // Find the song in search results
-      if (searchResults.tracks?.items.length > 0) {
-        song = searchResults.tracks.items.find((eachSong) => eachSong.id === currentSong.songId);
-      }
-      // Find the song in the playlist if not found in search results
-      if (!song && playlistItems?.data?.items.length > 0) {
-        song = playlistItems.data.items.find((eachSong) => eachSong.track.id === currentSong.songId);
-      }
-      setFoundSong(song); // ✅ Store in state
-    }
-  }, [currentSong, searchResults, playlistItems]);
-
-  const image = foundSong?.album?.images?.[0]?.url
-    || (foundSong?.track && foundSong.track.album?.images?.[0]?.url)
-    || "";
-
-  const title = foundSong?.name
-    || (foundSong?.track && foundSong.track.name)
-    || "Unknown Song";
-
-  const artist = foundSong?.artists?.[0]?.name
-    || (foundSong?.track && foundSong.track.artists?.[0]?.name)
-    || "Unknown Artist";
 
 
   const handleToggleMaximize = () => { dispatch(toggleMaximize()); };
@@ -91,24 +68,54 @@ const MusicPlayer = () => {
   const handlePlayPause = () => {
     dispatch(playPause());
   };
-
   const handleNextSong = () => {
+    if (!playlistItems || playlistItems.length === 0) return; // Ensure playlist exists
 
-    if (currentIndex < playlistItems?.data?.items.length - 1) {
-      const songId = playlistItems?.data?.items[currentIndex + 1]?.track.id;
-      const songUrl = playlistItems?.data?.items[currentIndex + 1]?.track.external_urls.spotify;
-      console.log("songId in music player", songId);
-      console.log("songUrl music player", songUrl);
-      if (status != 'loading') {
+    if (currentIndex < playlistItems.length - 1) {
+      let songId = playlistItems[currentIndex + 1]?.songDetails?.id;
+      let songUrl = playlistItems[currentIndex + 1]?.songDetails?.external_urls?.spotify;
+
+      // Fallback if songDetails is missing
+      if (!songId) {
+        songId = playlistItems[currentIndex + 1]?.track?.id;
+        songUrl = playlistItems[currentIndex + 1]?.track?.external_urls?.spotify;
+
+      }
+
+      if (songId && status !== "loading") {
         dispatch(nextSong());
-        dispatch(playSong({ songId, songUrl })).catch((error) => {
-          alert("Error playing the song:");
-          console.error("Error playing the song:", error);
 
-        });
+        dispatch(playSong({ songId, songUrl }))
+          .catch((error) => {
+            alert("Error playing the song.");
+            console.error("Error playing the song:", error);
+          });
+      }
+    }
+  };
+
+  const handlePrevSong = () => {
+    if (currentIndex > 0) {
+
+      let songId = playlistItems[currentIndex - 1]?.songDetails?.id;
+      let songUrl = playlistItems[currentIndex - 1]?.songDetails?.external_urls?.spotify;
+      if (!songId) {
+        songId = playlistItems[currentIndex + 1]?.track?.id;
+        songUrl = playlistItems[currentIndex + 1]?.track?.external_urls?.spotify;
+
+      }
+      if (songId && status !== "loading") {
+        dispatch(prevSong());
+
+        dispatch(playSong({ songId, songUrl }))
+          .catch((error) => {
+            alert("Error playing the song.");
+            console.error("Error playing the song:", error);
+          });
       }
 
     }
+
   }
   const handleDownload = () => {
     if (!currentSong?.url) return;
@@ -170,23 +177,22 @@ const MusicPlayer = () => {
               <div className="text-sm text-neutral-400">{artist}</div>
             </div>
           </div>
-          <div className="flex w-full h-full flex-col items-center gap-2">
+          <div className="flex w-full h-full flex-col items-center gap-2 ">
             <div className="flex items-center gap-4">
               <button>
                 <Shuffle className="h-5 w-5 text-neutral-400" />
               </button>
               <button>
-                <SkipBack className="h-5 w-5 text-neutral-400" />
+                <SkipBack className="h-5 w-5 text-neutral-400" onClick={handlePrevSong} />
               </button>
-              <button className="bg-white rounded-full p-2" onClick={handlePlayPause}>
-                {status === "loading" ? (
-                  <CircularProgress className="text-sm  text-black" />
-                ) : status === "playing" ? (
+              {status === "loading" ? (<CircularProgress className="h-5 w-5" />) : status === "playing" ? (
+                <button className="bg-white rounded-full p-2" onClick={handlePlayPause}>
                   <Pause className="h-5 w-5 text-black" fill="black" />
-                ) : (
+                </button>) : (
+                <button className="bg-white rounded-full p-2" onClick={handlePlayPause}>
                   <Play className="h-5 w-5 text-black" fill="black" />
-                )}
-              </button>
+                </button>
+              )}
 
               <button onClick={handleNextSong} >
                 <SkipForward className="h-5 w-5 text-neutral-400" />
@@ -285,6 +291,7 @@ const MusicPlayer = () => {
           volume={volume / 100}
           onProgress={({ playedSeconds }) => setPosition(playedSeconds)}
           onDuration={(duration) => setPlayerDuration(duration)}
+          onEnded={handleNextSong}
 
         />
       </div>

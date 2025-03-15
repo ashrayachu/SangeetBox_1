@@ -4,65 +4,44 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Karaoke from "./components/Karaoke";
+import MainLayout from "./components/MainLayout";
+
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import Karaoke from "./components/Karaoke";
-import MusicPlayer from "./components/MusicPlayer";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import Error from "./pages/Error";
 import Playlist from "./pages/Playlist";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import AllTracks from "./pages/AllTracks";
+import Trending from "./pages/Trending";
+import Tamil from "./pages/Tamil";
 
-import Footer from "./components/Footer";
-import Test from "./components/Test";
+
+
+
 
 
 function App() {
   // const [maximize, setMaximize] = useState(false); // Moved state to App
   return (
     <Router>
-      <ToastContainer />
-      <div className="h-screen flex flex-col ">
-        <Navbar />
-        <div className="flex flex-grow">
-          <Sidebar />
-          <div className=" flex-grow overflow-auto ">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/search/:query" element={<Search />} />
-              <Route path="/karaoke/:songId" element={<Karaoke />} />
-              <Route path="/error" element={<Error />} />
-              <Route path="/playlist/:playlistId" element={<Playlist />} />
-            </Routes>
-          </div>
-        </div>
-        <Footer />
-        <div className="relative z-50">
-          <MusicPlayer />
-        </div>
+  <ToastContainer />
+  <Routes>
+    <Route path="/register" element={<Register />} />
+    <Route path="/login" element={<Login />} />
+    <Route element={<MainLayout />}>
+      <Route path="/" element={<Home />} />
+      <Route path="/search/:query" element={<Search />} />
+      <Route path="/karaoke/:songId" element={<Karaoke />} />
+      <Route path="/playlist/:playlistId" element={<Playlist />} />
+      <Route path="/tracks" element={<AllTracks />} />
+      <Route path="/trending" element={<Trending />} />
+      <Route path="/tamil" element={<Tamil />} />
+    </Route>
+  </Routes>
+</Router>
 
-      </div>
-    </Router>
-    // <Router>
-    //   <div className={`h-screen flex flex-col ${maximize ? "relative" : ""}`}>
-    //     {maximize && <MusicPlayer maximize={maximize} setMaximize={setMaximize} />}
-    //     <Navbar />
-    //     <div className={`flex flex-grow ${maximize ? "hidden" : "flex"}`}>
-    //       <Sidebar />
-    //       <div className="flex-grow overflow-auto">
-    //         <Routes>
-    //           <Route path="/test" element={<Test />} />
-    //           <Route path="/" element={<Home />} />
-    //           <Route path="/search/:query" element={<Search />} />
-    //           <Route path="/karaoke/:songId" element={<Karaoke />} />
-    //           <Route path="/musicplayer" element={<MusicPlayer maximize={maximize} setMaximize={setMaximize} />} />
-    //         </Routes>
-    //         <Footer/>
-    //       </div>
-    //     </div>
-    //     {!maximize && <MusicPlayer maximize={maximize} setMaximize={setMaximize} />}
-    //   </div>
-    // </Router>
   );
 }
 

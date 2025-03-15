@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getPlaylist } from "./getPlaylist";
+import { allTracks } from "./allTracks";
 const API_URL = import.meta.env.VITE_API_URL;
 
 //Async function to play a song (API call)
@@ -11,7 +12,12 @@ export const playSong = createAsyncThunk(
 
     try {
       console.log("Sending request:", { songId, songUrl });
-      const response = await axios.post(`${API_URL}/api/play`, {
+      // const response = await axios.post(`${API_URL}/api/play`, {
+      //   songId,
+      //   songUrl,
+      // });
+
+       const response = await axios.post(`http://localhost:5000/api/play`, {
         songId,
         songUrl,
       });
@@ -53,11 +59,13 @@ const playerSlice = createSlice({
       state.status = "stopped";
       state.currentSong = null;
     },
-    nextSong: (state, action) => {
-      const playlistLength = state.playlist.data.items.length;
+    nextSong: (state) => {
+      const playlistLength = state.playlist.length; 
+    
       if (state.currentIndex < playlistLength - 1) {
-        state.currentIndex += 1;
-        state.currentSong = state.playlist.data.items[state.currentIndex].track;
+        state.currentIndex += 1; // Increment index
+        state.currentSong = state.playlist[state.currentIndex]; // Set the next song
+        state.status = "playing"; // Update status properly
       } else {
         state.status = "stopped"; // Stop if last song
       }
@@ -65,7 +73,7 @@ const playerSlice = createSlice({
     prevSong: (state, action) => {
       if (state.currentIndex > 0) {
         state.currentIndex -= 1;
-        state.currentSong = state.playlist.data.items[state.currentIndex].track;
+        state.currentSong = state.playlist[state.currentIndex];
         state.status = "playing";
       }
     },
@@ -76,10 +84,11 @@ const playerSlice = createSlice({
       state.status = "idle";
     },
     setCurrentIndex: (state, action) => {
-      
-        const newIndex = action.payload;
+      const newIndex = action.payload;
+      if(newIndex > 0){
         state.currentIndex = newIndex;
-      
+      }
+
     },
   },
   extraReducers: (builder) => {
@@ -98,10 +107,14 @@ const playerSlice = createSlice({
         state.error = action.payload || "Playback failed";
       })
       .addCase(getPlaylist.fulfilled, (state, action) => {
+        state.playlist = action.payload.data.items;
+        state.currentIndex = 0;
+      })
+      .addCase(allTracks.fulfilled, (state, action) => {
         state.playlist = action.payload;
         state.currentIndex = 0;
       });
-    }
+  }
 });
 
 export const { playPause, stopSong, prevSong, nextSong, toggleMaximize, setPlaylist, setCurrentIndex, clearError } = playerSlice.actions;

@@ -20,6 +20,7 @@ const fetchSong = (songUrl) => {
             apiResponse.on("end", () => {
                 try {
                     const body = JSON.parse(Buffer.concat(chunks).toString());
+                    console.log("body", body)
                     if (!body.success || !body.data.downloadLink) {
                         const errorMessage = body.message || "Failed to get download link from API";
                         return reject(new Error(`API Error: ${errorMessage}`));
