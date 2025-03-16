@@ -31,6 +31,12 @@ app.use(session({
     cookie: { secure: process.env.NODE_ENV === 'production' },
     sameSite: 'None'
 }));
+app.use((req, res, next) => {
+    console.log("Cookies Received:", req.cookies);
+    console.log("Session Data:", req.session);
+    next();
+});
+
 
 app.use(passport.initialize());
 app.use(passport.session());
