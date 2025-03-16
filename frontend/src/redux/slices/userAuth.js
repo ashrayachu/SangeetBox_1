@@ -7,8 +7,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 export const googleAuth = createAsyncThunk("auth/googleAuth", async (_, { rejectWithValue }) => {
 
   try {
-    // const response = await axios.get(`http://localhost:5000/`, { withCredentials: true });
-    const response = await axios.get(`${API_URL}`, { withCredentials: true });
+    // const response = await axios.get(`http://localhost:5000/auth`, { withCredentials: true });
+    const response = await axios.get(`${API_URL}/auth`, { withCredentials: true });
 
 
     return response.data;

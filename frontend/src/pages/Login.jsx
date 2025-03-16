@@ -36,8 +36,8 @@ const Login = () => {
     };
     
     const handleGoogleAuth = () => {
-        window.open(`${API_URL}/login/google/callback`, "_self");
-        // window.open(`http://localhost:5000/login/google/callback`, "_self");
+        window.open(`${API_URL}/auth/login/google/callback`, "_self");
+        // window.open(`http://localhost:5000/auth/login/google/callback`, "_self");
 
     };
 

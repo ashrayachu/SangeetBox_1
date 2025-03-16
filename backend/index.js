@@ -54,7 +54,7 @@ app.use("/api", songRoutes);
 app.use("/api", PlaylistRoutes);
 app.use("/api", alltracksRoutes);
 app.use("/api", addPlaylistRoutes);
-app.use("/", userAuthRoutes);
+app.use("/auth", userAuthRoutes);
 
 
 

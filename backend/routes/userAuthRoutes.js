@@ -16,7 +16,7 @@ router.get("/login/google", passport.authenticate('google', { scope: ['profile']
 
 // Google OAuth Callback Route
 router.get('/login/google/callback',
-    passport.authenticate('google', { failureRedirect:'process.env.VITE_FRONTEND_LOGIN'}),
+    passport.authenticate('google', { failureRedirect:process.env.VITE_FRONTEND_LOGIN}),
     async (req, res) => {
         if (!req.user) {
             return res.status(401).json({ message: "Authentication failed" });
@@ -41,6 +41,7 @@ router.get('/login/google/callback',
 // Route to check authentication and return user details
 router.get('/', (req, res) => {
     const token = req.cookies.token; // Ensure cookie-parser is used
+    console.log("token", token)
 
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized' });
