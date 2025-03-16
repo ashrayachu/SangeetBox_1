@@ -11,12 +11,12 @@ export const searchSongs = createAsyncThunk("search/searchSongs", async (query, 
   }
 
   try {
-    // const response = await axios.get(`${API_URL}/api/search`, {
-    //   params: { query },
-    // });
-    const response = await axios.get(`http://localhost:5000/api/search`, {
+    const response = await axios.get(`${API_URL}/api/search`, {
       params: { query },
     });
+    // const response = await axios.get(`http://localhost:5000/api/search`, {
+    //   params: { query },
+    // });
   
     return response.data;
   } catch (error) {

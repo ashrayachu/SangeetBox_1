@@ -69,8 +69,8 @@ router.get('/logout', (req, res) => {
             if (err) {
                 return res.status(500).json({ message: "Could not clear session" });
             }
-
-            res.clearCookie('token'); // Clear the authentication token
+            res.clearCookie('token'); // Ensure the auth token is cleared
+            res.clearCookie('connect.sid'); // If using express-session
             res.json({ message: "Logged out successfully" });
         });
     });

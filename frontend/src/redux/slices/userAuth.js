@@ -8,7 +8,7 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async (_, { reject
 
   try {
     // const response = await axios.get(`http://localhost:5000/auth`, { withCredentials: true });
-    const response = await axios.get(`https://sangeetbox.onrender.com/auth`, { withCredentials: true });
+    const response = await axios.get(`${API_URL}/auth`, { withCredentials: true });
 
     return response.data;
   } catch (error) { 
@@ -20,8 +20,8 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async (_, { reject
 export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
 
   try {
-    const response = await axios.get(`http://localhost:5000/logout`, { withCredentials: true });
-    // const response = await axios.get(`${API_URL}/logout`, { withCredentials: true });
+    // const response = await axios.get(`http://localhost:5000/logout`, { withCredentials: true });
+    const response = await axios.get(`${API_URL}/auth/logout`, { withCredentials: true });
 
     return response.data;
   } catch (error) {
@@ -37,7 +37,7 @@ export const register = createAsyncThunk(
     try {
       console.log("FormData being sent:", formData); // Debugging log
 
-      const response = await axios.post(`${API_URL}/register`, formData, {
+      const response = await axios.post(`${API_URL}/auth/register`, formData, {
         withCredentials: true, // Ensure cookies are sent if required
       });
       // const response = await axios.post(`http://localhost:5173/register`, formData, {
@@ -70,7 +70,7 @@ export const login = createAsyncThunk(
     try {
       console.log("FormData being sent:", formData); // Debugging log
 
-      const response = await axios.post(`${API_URL}/login`, formData, {
+      const response = await axios.post(`${API_URL}/auth/login`, formData, {
         withCredentials: true, // Ensure cookies are sent if required
       });
       // const response = await axios.post(`http://localhost:5000/login`, formData, {
