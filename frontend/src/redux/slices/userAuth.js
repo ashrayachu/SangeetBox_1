@@ -8,11 +8,11 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async (_, { reject
 
   try {
     // const response = await axios.get(`http://localhost:5000/`, { withCredentials: true });
-    const response = await axios.get(API_URL, { withCredentials: true });
+    const response = await axios.get(`${API_URL}`, { withCredentials: true });
 
 
     return response.data;
-  } catch (error) {
+  } catch (error) { 
     toast.info("Could not find user");
     return rejectWithValue(error.response?.data?.message || "Could not find google user");
   }
@@ -21,8 +21,8 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async (_, { reject
 export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
 
   try {
-    // const response = await axios.get(`http://localhost:5000/logout`, { withCredentials: true });
-    const response = await axios.get(`${API_URL}/logout`, { withCredentials: true });
+    const response = await axios.get(`http://localhost:5000/logout`, { withCredentials: true });
+    // const response = await axios.get(`${API_URL}/logout`, { withCredentials: true });
 
     return response.data;
   } catch (error) {
