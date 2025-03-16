@@ -18,12 +18,15 @@ router.get("/login/google", passport.authenticate('google', { scope: ['profile']
 router.get('/login/google/callback',
     passport.authenticate('google', { failureRedirect:process.env.VITE_FRONTEND_LOGIN}),
     async (req, res) => {
+        
+        console.log("User from Google OAuth:", req.user); // Debugging log
         if (!req.user) {
             return res.status(401).json({ message: "Authentication failed" });
         }
 
         // Generate JWT token
         const token = generateToken(req.user);
+        console.log("token from google auth callback", token)
 
         // Set token as HTTP-only cookie
         res.cookie('token', token, {
