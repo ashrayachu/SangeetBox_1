@@ -12,15 +12,15 @@ export const playSong = createAsyncThunk(
 
     try {
       console.log("Sending request:", { songId, songUrl });
-      // const response = await axios.post(`${API_URL}/api/play`, {
-      //   songId,
-      //   songUrl,
-      // });
-
-       const response = await axios.post(`http://localhost:5000/api/play`, {
+      const response = await axios.post(`${API_URL}/api/play`, {
         songId,
         songUrl,
       });
+
+      //  const response = await axios.post(`http://localhost:5000/api/play`, {
+      //   songId,
+      //   songUrl,
+      // });
       return response.data;
     } catch (error) {
 

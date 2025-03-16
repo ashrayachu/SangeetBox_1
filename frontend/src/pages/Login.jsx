@@ -39,7 +39,7 @@ const Login = () => {
         window.open(`${API_URL}/auth/login/google/callback`, "_self");
         // window.open(`http://localhost:5000/auth/login/google/callback`, "_self");
 
-    };
+    };  
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-neutral-900 p-4">
