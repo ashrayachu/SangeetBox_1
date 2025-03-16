@@ -42,6 +42,8 @@ const register = async (req, res) => {
 
 
     console.log("User Registered successful");
+    
+    res.json({ message: "Login successful", token });
 
 
 
