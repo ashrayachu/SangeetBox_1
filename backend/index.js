@@ -24,12 +24,17 @@ app.use(cors({
     credentials: true
 }));
 app.use(cookieParser());
+
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET, // Use a strong secret key
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: process.env.NODE_ENV === 'production' },
-    sameSite: 'None'
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true, // Prevents client-side access to cookies
+        secure: process.env.NODE_ENV === 'production', // Secure in production (HTTPS only)
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Allows cross-origin cookies
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
 }));
 app.use((req, res, next) => {
     console.log("Cookies Received:", req.cookies);

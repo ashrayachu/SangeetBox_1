@@ -8,8 +8,7 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async (_, { reject
 
   try {
     // const response = await axios.get(`http://localhost:5000/auth`, { withCredentials: true });
-    const response = await axios.get(`${API_URL}/auth`, { withCredentials: true });
-
+    const response = await axios.get(`https://sangeetbox.onrender.com/auth`, { withCredentials: true });
 
     return response.data;
   } catch (error) { 

@@ -2,11 +2,11 @@ const express = require("express");
 const passport = require('passport');
 const jwt = require('jsonwebtoken');  // Import JWT
 require('../config/passportConfig'); // Ensure Passport is configured
-const {register} = require('../controllers/registerController')
-const {login} = require('../controllers/loginController')
+const { register } = require('../controllers/registerController')
+const { login } = require('../controllers/loginController')
 
 
-const generateToken = require('../utlis/jwt'); 
+const generateToken = require('../utlis/jwt');
 
 const router = express.Router();
 
@@ -16,9 +16,9 @@ router.get("/login/google", passport.authenticate('google', { scope: ['profile']
 
 // Google OAuth Callback Route
 router.get('/login/google/callback',
-    passport.authenticate('google', { failureRedirect:process.env.VITE_FRONTEND_LOGIN}),
+    passport.authenticate('google', { failureRedirect: process.env.VITE_FRONTEND_LOGIN }),
     async (req, res) => {
-        
+
         console.log("User from Google OAuth:", req.user); // Debugging log
         if (!req.user) {
             return res.status(401).json({ message: "Authentication failed" });
@@ -33,12 +33,12 @@ router.get('/login/google/callback',
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', // Secure only in production
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days,
-            sameSite:'lax'
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
         });
 
         console.log("Google OAuth Callback successful");
 
-        res.redirect(process.env.VITE_FRONTEND); // Redirect to frontend
+        res.redirect(process.env.VITE_FRONTEND); // Redirect to frontend    
     }
 );
 
@@ -74,7 +74,7 @@ router.get('/logout', (req, res) => {
             res.json({ message: "Logged out successfully" });
         });
     });
-}); 
+});
 
 router.post('/register', register)
 router.post('/login', login)
