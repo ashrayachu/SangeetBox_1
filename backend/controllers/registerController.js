@@ -1,6 +1,6 @@
-const bcrypt = require("bcryptjs"); 
+const bcrypt = require("bcryptjs");
 const User = require("../models/User");
-const generateToken = require('../utlis/jwt'); 
+const generateToken = require('../utlis/jwt');
 
 const register = async (req, res) => {
   try {
@@ -33,12 +33,14 @@ const register = async (req, res) => {
 
     // Set token as HTTP-only cookie
     res.cookie('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Secure only in production
-        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    }).json({message:"token created successfully"})
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Secure only in production
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
 
-    
+    })
+
+
     console.log("User Registered successful");
 
 

@@ -78,7 +78,7 @@ export const login = createAsyncThunk(
       // });
 
       // Show success message
-      toast.success("Registration successful!");
+      toast.success("login successful!");
 
       // Redirect after successful registration
       window.location.href = "http://localhost:5173/";
