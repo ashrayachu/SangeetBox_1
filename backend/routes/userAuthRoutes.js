@@ -60,19 +60,13 @@ router.get('/', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) {
-            return res.status(500).json({ message: "Logout failed" });
-        }
+    req.session.destroy((err) => {
+        if (err) return res.status(500).json({ message: "Could not clear session" });
 
-        req.session.destroy((err) => {
-            if (err) {
-                return res.status(500).json({ message: "Could not clear session" });
-            }
-            res.clearCookie('token'); // Ensure the auth token is cleared
-            res.clearCookie('connect.sid'); // If using express-session
-            res.json({ message: "Logged out successfully" });
-        });
+        res.clearCookie('token', { path: '/' });
+        res.clearCookie('connect.sid'); // If using express-session
+
+        res.json({ message: "Logged out successfully" });
     });
 });
 
