@@ -7,9 +7,4 @@ export default defineConfig({
    plugins: [
     tailwindcss(),
   ],
-  build: {
-    rollupOptions: {
-      external: ["@mui/icons-material/Google"],
-    },
-  },
 })

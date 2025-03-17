@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from "lucide-react";
-import GoogleIcon from '@mui/icons-material/Google';
+import { Mail } from 'lucide-react';
+
 import { Link } from 'react-router-dom';
-import {  useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { register } from '../redux/slices/userAuth';
 
 const Register = () => {
@@ -48,9 +49,8 @@ const Register = () => {
                     className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg p-3 mb-6 hover:bg-gray-50 transition-colors"
                     onClick={handleGoogleAuth}
                 >
-                    <span className='bg-red-400 p-2 rounded-full'>
-                        <GoogleIcon className='text-white' />
-                    </span>
+                    <Mail className='w-8 h-8 text-white ' strokeWidth='0.3 ' fill='red' />
+
                     <span className="text-gray-700">Log in with Google</span>
                 </button>
 

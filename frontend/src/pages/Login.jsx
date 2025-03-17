@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from "lucide-react";
-import GoogleIcon from '@mui/icons-material/Google';
+import { Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/userAuth';
@@ -14,7 +14,7 @@ const Login = () => {
         email: '',
         password: '',
     });
-    
+
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
@@ -34,23 +34,22 @@ const Login = () => {
         console.log("Dispatching login action with:", formData);
         dispatch(login(formData));
     };
-    
+
     const handleGoogleAuth = () => {
         window.open(`${API_URL}/auth/login/google/callback`, "_self");
         // window.open(`http://localhost:5000/auth/login/google/callback`, "_self");
 
-    };  
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-neutral-900 p-4">
             <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-                <button 
+                <button
                     className="w-full flex items-center justify-center gap-2 border border-gray-300 rounded-lg p-3 mb-6 hover:bg-gray-50 transition-colors"
                     onClick={handleGoogleAuth}
                 >
-                    <span className='bg-red-400 p-2 rounded-full'>
-                        <GoogleIcon className='text-white' />
-                    </span>
+                    <Mail className='w-8 h-8 text-white 'strokeWidth='0.3 ' fill='red' />
+
                     <span className="text-gray-700">Log in with Google</span>
                 </button>
 
@@ -114,7 +113,7 @@ const Login = () => {
                             </button>
                         </div>
                     </div>
-                    
+
                     <button
                         type="submit"
                         className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors"
