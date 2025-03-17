@@ -20,7 +20,7 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173", // Update with your frontend URL
+    origin: ["http://localhost:5173","https://sangeethbox.netlify.app"], // Update with your frontend URL
     credentials: true
 }));
 app.use(cookieParser());

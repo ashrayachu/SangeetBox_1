@@ -81,7 +81,7 @@ export const login = createAsyncThunk(
       toast.success("login successful!");
 
       // Redirect after successful registration
-      window.location.href = "http://localhost:5173/";
+      window.location.href = "https://sangeethbox.netlify.app/";
       // window.location.href = API_URL;
 
 
