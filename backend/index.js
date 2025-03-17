@@ -20,21 +20,25 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:5173","https://sangeethbox.netlify.app"], // Update with your frontend URL
-    credentials: true
+    origin: ["http://localhost:5173", "https://sangeethbox.netlify.app"],
+    credentials: true, // ✅ Allows sending cookies
+    methods: ["GET", "POST", "PUT", "DELETE"], // ✅ Define allowed methods
+    allowedHeaders: ["Content-Type", "Authorization"], // ✅ Allow necessary headers
 }));
+
 app.use(cookieParser());
 
 app.use(session({
-    secret: process.env.SESSION_SECRET, // Use a strong secret key
+    secret: process.env.SESSION_SECRET, // ✅ Strong secret key from env
     resave: false,
     saveUninitialized: false,
     cookie: {
-        httpOnly: true, // Prevents client-side access to cookies
-        secure: process.env.NODE_ENV === 'production', // Secure in production (HTTPS only)
-        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Allows cross-origin cookies
-        maxAge: 24 * 60 * 60 * 1000 // 1 day
-    }
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // ✅ Only secure in production
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        maxAge: 24 * 60 * 60 * 1000 // ✅ 1 day
+    },
+    proxy: process.env.NODE_ENV === 'production', // ✅ Required if using proxies like Netlify/Vercel
 }));
 app.use((req, res, next) => {
     console.log("Cookies Received:", req.cookies);
