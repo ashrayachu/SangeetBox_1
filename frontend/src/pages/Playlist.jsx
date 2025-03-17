@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getPlaylist } from "../redux/slices/getPlaylist";
 import { playSong, setCurrentIndex } from "../redux/slices/playSong";
+
+
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Playlist = () => {
@@ -15,9 +17,10 @@ const Playlist = () => {
     const searchResults = useSelector((state) => state.search.searchResults);
     const trendingPlaylists = useSelector((state) => state.spotify.trendingPlaylists);
     const status = useSelector((state) => state.playSong?.status);
+    const user= useSelector((state)=>state.auth?.userDoc)
 
     useEffect(() => {
-        if (playlistId) {
+        if (playlistId && user) {
             let foundPlaylist = null;
             dispatch(getPlaylist(playlistId));
 
@@ -33,8 +36,6 @@ const Playlist = () => {
             }
         }
     }, [playlistId, dispatch, trendingPlaylists, searchResults]);
-
-    console.log("foundplaylist", foundplaylist);
 
     const image = foundplaylist?.images?.[0]?.url;
     const title = foundplaylist?.name || "Unknown Playlist";
@@ -75,7 +76,9 @@ const Playlist = () => {
                         <p className="text-gray-400 text-sm sm:text-base">
                             {playlist?.length} songs
                         </p>
-                        <button className="text-amber-100 text-sm sm:text-base font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-md transition-all">
+                        <button 
+                        onClick={() => handlePlay(playlist[0].track.id, playlist[0].track.external_urls.spotify, 0)}
+                         className="text-amber-100 text-sm sm:text-base font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-md transition-all">
                             Play
                         </button>
                     </div>

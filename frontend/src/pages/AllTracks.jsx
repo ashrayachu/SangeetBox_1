@@ -49,7 +49,7 @@ const AllTracks = () => {
                            Playlist
                         </p>
                         <p className="text-lg sm:text-2xl md:text-3xl text-amber-100 font-normal">
-                            Awesome Playlits
+                            Awesome Playlist
                         </p>
                         <p className="text-md sm:text-xl md:text-2xl text-amber-100 font-normal">
                             Collection of all the tracks in admin dashbord

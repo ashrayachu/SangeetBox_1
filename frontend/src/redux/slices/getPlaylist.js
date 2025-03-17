@@ -11,12 +11,12 @@ export const getPlaylist = createAsyncThunk(
    
     try {
       console.log("Sending request:", {playlistId});
-    //   const response = await axios.get(`${API_URL}/api/playlist`, {
-    //     params: { playlistId: encodeURIComponent(playlistId) }
-    // });
-    const response = await axios.get(`http://localhost:5000/api/playlist`, {
-      params: { playlistId: encodeURIComponent(playlistId) }
-  });
+      const response = await axios.get(`${API_URL}/api/playlist`, {
+        params: { playlistId: encodeURIComponent(playlistId) }
+    });
+  //   const response = await axios.get(`http://localhost:5000/api/playlist`, {
+  //     params: { playlistId: encodeURIComponent(playlistId) }
+  // });
     return response.data;
     } catch (error) {
      

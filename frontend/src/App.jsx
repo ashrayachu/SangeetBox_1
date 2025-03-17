@@ -16,6 +16,14 @@ import Login from "./pages/Login";
 import AllTracks from "./pages/AllTracks";
 import Trending from "./pages/Trending";
 import Tamil from "./pages/Tamil";
+import Malayalam from "./pages/Malayalam";
+import Hindi from "./pages/Hindi";
+import Kpop from "./pages/Kpop";
+import English from "./pages/English";
+
+
+
+
 
 
 
@@ -38,6 +46,14 @@ function App() {
       <Route path="/tracks" element={<AllTracks />} />
       <Route path="/trending" element={<Trending />} />
       <Route path="/tamil" element={<Tamil />} />
+      <Route path="/malayalam" element={<Malayalam />} />
+      <Route path="/hindi" element={<Hindi />} />
+      <Route path="/kpop" element={<Kpop />} />
+      <Route path="/english" element={<English />} />
+
+
+
+
     </Route>
   </Routes>
 </Router>

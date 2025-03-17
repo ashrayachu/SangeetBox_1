@@ -5,7 +5,7 @@ import {
 } from "lucide-react"
 import { logout } from "../redux/slices/userAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
@@ -15,10 +15,10 @@ const Sidebar = () => {
 
     const dispatch = useDispatch();
     const userDoc = useSelector((state) => state.auth?.userDoc);
-       const handleLogout = () => {
-            dispatch(logout())
-        }
-    
+    const handleLogout = () => {
+        dispatch(logout())
+    }
+    const navigate = useNavigate()
 
     return (
         <>
@@ -32,25 +32,26 @@ const Sidebar = () => {
                 {/* Scrollable Content */}
                 <div className="flex-1 bg-neutral-900 rounded-lg overflow-y-auto max-h-[calc(100vh-150px)]">
                     {/* Library Items */}
-                    <div className="p-2 hover:bg-neutral-800 rounded-lg cursor-pointer">
-                        <div className="flex items-center gap-3">
+                    {/* <div className="p-2 hover:bg-neutral-800 rounded-lg cursor-pointer"> */}
+                    {/* <div className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
                                 <span className="text-white">❤️</span>
                             </div>
                             <div>
-                                <div className="font-semibold">Liked Songs</div>
+                                <div className="font-semibold text-white">Liked Songs</div>
                                 <div className="text-sm text-neutral-400">Playlist • 28 songs</div>
                             </div>
-                        </div>
-                    </div>
+                        </div> */}
+                    {/* </div> */}
                     {/* Duplicate this block multiple times to test scrolling */}
-                    <div className="p-2 hover:bg-neutral-800 rounded-lg cursor-pointer">
+                    <div className="p-2 hover:bg-neutral-800 rounded-lg cursor-pointer"
+                        onClick={() => navigate('/tracks')}>
                         <div className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
                                 <span className="text-white">🎵</span>
                             </div>
                             <div>
-                                <div className="font-semibold">Top Hits</div>
+                                <div className="font-semibold text-white"> Dashboard Songs</div>
                                 <div className="text-sm text-neutral-400">Playlist • 50 songs</div>
                             </div>
                         </div>
@@ -79,7 +80,7 @@ const Sidebar = () => {
                                     <div className=' flex flex-col gap-2 justify-center items-center'>
                                         <span className='text-white'>Hey, {userDoc?.user?.name}</span>
                                         <button onClick={handleLogout}
-                                        className="bg-white text-black rounded-full px-4 py-1 font-semibold text-sm">Logout</button>
+                                            className="bg-white text-black rounded-full px-4 py-1 font-semibold text-sm">Logout</button>
                                     </div>
                                 ) : (
                                     <div className=' flex flex-col gap-2 justify-center items-center'>
@@ -97,7 +98,7 @@ const Sidebar = () => {
                                 </button>
                             </div>
                             <div>
-                                <div className="p-2 hover:bg-neutral-800 rounded-lg cursor-pointer">
+                                {/* <div className="p-2 hover:bg-neutral-800 rounded-lg cursor-pointer">
                                     <div className="flex items-center gap-3">
                                         <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
                                             <span className="text-white">❤️</span>
@@ -105,6 +106,18 @@ const Sidebar = () => {
                                         <div>
                                             <div className="font-semibold">Liked Songs</div>
                                             <div className="text-sm text-neutral-400">Playlist • 28 songs</div>
+                                        </div>
+                                    </div>
+                                </div> */}
+                                <div className="p-2 hover:bg-neutral-800 rounded-lg cursor-pointer"
+                                    onClick={() => navigate('/tracks')}>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                                            <span className="text-white">🎵</span>
+                                        </div>
+                                        <div>
+                                            <div className="font-semibold text-white"> Dashboard Songs</div>
+                                            <div className="text-sm text-neutral-400">Playlist • 50 songs</div>
                                         </div>
                                     </div>
                                 </div>

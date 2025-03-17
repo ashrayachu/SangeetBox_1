@@ -2,6 +2,7 @@
 
 
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 
 const categories = [
@@ -12,10 +13,10 @@ const categories = [
     href: "/trending",
   },
   {
-    title: "Chill",
+    title: "Malayalam",
     bgColor: "bg-[#7b5cff]",
     imageSrc: "/placeholder.svg?height=150&width=150",
-    href: "/chill",
+    href: "/malayalam",
   },
   {
     title: "English",
@@ -39,15 +40,16 @@ const categories = [
     title: "K-Pop",
     bgColor: "bg-[#b33dbd]",
     imageSrc: "/placeholder.svg?height=150&width=150",
-    href: "/k-pop",
+    href: "/kpop",
   },
 ]
 
 export default function Categories() {
   const [hoveredIndex, setHoveredIndex] = useState(null)
+  const navigate = useNavigate()
 
   const handleClick = (href) => {
-    router.push(href)
+    navigate(href)
   }
 
   return (

@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTamilPlaylists } from "../redux/slices/spotifySlice";
+import { fetchMalayalamPlaylists } from "../redux/slices/spotifySlice";
 import CircularProgress from '@mui/material/CircularProgress';
 import PlaylistSlider from '../components/PlaylistSlider';
 
-const Tamil = () => {
+const Malayalam = () => {
     const dispatch = useDispatch();
     const { trendingPlaylists, status } = useSelector((state) => state.spotify);
 
     useEffect(() => {
-        dispatch(fetchTamilPlaylists());
+        dispatch(fetchMalayalamPlaylists());
     }, [dispatch]);
 
     return (
@@ -19,11 +19,11 @@ const Tamil = () => {
                     <CircularProgress className='w-10 h-10' />
                 </div>
             ) : trendingPlaylists?.length > 0 ? (
-                <PlaylistSlider title="Tamil Playlists" playlists={trendingPlaylists} />
-            ) : null}
+                <PlaylistSlider title="Malayalam Playlists" playlists={trendingPlaylists} />
+            ) : (<h1>No Playlist Found</h1>)}
         </div>
 
     );
 };
 
-export default Tamil;
+export default Malayalam;
